@@ -87,7 +87,7 @@ class ComplexityValidator(object):
                 digits.add(character)
             elif character in string.punctuation:
                 punctuation.add(character)
-            elif not character.isspace():
+            elif set('[~!@#$%^&*()_+{}":;\']+$').intersection(character):
                 special.add(character)
 
         words = set(re.findall(r'\b\w+', value, re.UNICODE))
@@ -115,7 +115,7 @@ class ComplexityValidator(object):
                   ) % self.complexities) % string.punctuation)
         if len(special) < self.complexities.get("SPECIAL", 0):
             errors.append(
-                _("must contain %(SPECIAL)s or more non unique special characters") %
+                _("must contain %(SPECIAL)s like ~!@#$%^&*()_+{}":;\'") %
                 self.complexities)
         if len(words) < self.complexities.get("WORDS", 0):
             errors.append(
